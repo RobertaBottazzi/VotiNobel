@@ -1,0 +1,51 @@
+Voglio avere un sotto-insieme degli esami che vengono dati in base
+al numero di crediti specificati: non importa l'ordine quindi posso utilizzare un set.
+INPUT:
+	-Insieme di dati di partenza di tipo esame (PARTENZA)
+	-#crediti (m)
+OUTPUT:
+	-Insieme (quindi set) di oggetti di tipo esame
+	tale che:
+		-la somma di Esame.crediti()==m
+		-media Esame.voto() sia massima
+
+***APPROCCIO STUPIDO (simile agli anagrammi)***:
+Ad ogni livello della ricorsione aggiungo un esame, il problema qui è che devo decidere quale aggiungere e per farlo li devo provare tutti:
+Al primo giro inserisco il primo elemento e faccio ricorsione, dopodichè inserisco il secondo e faccio ricorsione tenendo conto che il secondo esame è come se fosse il primo perchè inserito per primo. 
+Questo finchè non trovo la soluzione migliore.
+Una SOLUZIONE PARZIALE in questo caso sarà un sottounsieme di livello elementi
+Una GENERALIZZAZIONE DELLA SOLUZIONE PARZIALE sarà che per tutti gli esami che non ho ancora compreso in parziale:
+	-provo ad aggiungere
+	-faccio andare avanti la ricorsione
+	-faccio backtracking
+   livello 0 -> ho N scelte possibili -> PARZIALE1={esame1} oppure PARZIALE2={esame2} [...] PARZIALE={esameN}
+   livello 1 -> PARZIALE1={esame1, esame 2} oppure PARZIALE1={esame2,esame3} etc.. PARZIALE2={esame2,esame1} oppure PARZIALE2={esame2,esame3}
+
+L'ORDINE PERò NON CONTA!! QUINDI FARE RICORSIONE COSì è FIN TROPPO ACCURATA!!
+
+-CASI TERMINALI:
+	1)livello=numero di esami -> non ci sono più esami da aggiungere perciò dobbiamo controllare qual è la migliore soluzione parziale:
+																					
+																					- se PARZIALE.sommaCrediti==m la soluzione è accettabile e se PARZIALE.media> di tutte le medie viste finora allora tengo traccia di questa soluzione
+																					- se PARZIALE.sommaCrediti!=m abbandono la ricorsione, la soluzione non è accettabile
+	2)PARZIALE.sommaCrediti()>m -> mi fermo perchè ho raggiunto il numero di crediti che voglio:
+		-se > m scarto PARZIALE e non vado avanti perchè aggiungendo gli esami che mi mancano per arrivare a quello richiesto, la somma di crediti non può che aumentare
+		-se = m -> controllo la soluzione PARZIALE come prima.
+
+***APPROCCIO INTELLIGENTE***:
+Genero i sotto-insiemi di esami un caso per volta, decidendo man mano nella ricorsione se quell'esame deve essere inserito nel sotto-insieme. Questo ci permette di non esploare sia PARZIALE={esame1,esame2} che PARZIALE={esame2,esame1}
+-LIVELLO DELLA RICORSIONE (L) indica quale corso sto decidento di mettere o non mettere nella soluzione perchè scorro la lista di esami in ordine.
+	
+	supponiamo di avere PARTENZA ordinato {esame1,esame2...,esameN}
+	livello 0 -> considero esame1
+		-lo metto->PARZIALE1={esame1}
+		-non lo metto -> PARZIALE2={} 
+	livello 1 -> considero esame2
+		-lo metto->PARZIALE1={esame1,esame2} e PARZIALE2={esame2}
+		-non lo metto-> PARZIALE1={esame1} e PARZIALE2={}	
+I casi terminali rimangono quelli di prima	
+	
+	
+	
+	
+	 
